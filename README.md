@@ -1,6 +1,8 @@
 # AngularJS-CRUD
  This is a simple CRUD oparation with Angular JS.
 
+### [Live Demo](https://hafiz6512.github.io/AngularJS-CRUD)
+
 ## Our Website
 ### [DHC](http://diehardcoder.com)
 
