@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Angular JS Practice</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	
+	<!-- css -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<!-- js -->
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+
+</head>
+
+<body ng-app="myApp" ng-controller="myController">
+	
+	<div class="container">
+		<header class="header clearfix">
+			<h1 class="pull-left">All Users</h1>	
+			<button type="button" class="btn btn-default btn-info pull-right" data-toggle="modal" data-target="#newUserModal">Add New</button>
+		</header>
+
+		<div class="alert alert-info" ng-if="message">
+			<a href="#" class="close" aria-label="close" ng-click="clearMessage();">&times;</a>
+			{{message}}
+		</div>
+
+		<main>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Index</th>
+						<th>User Name</th>
+						<th>Email</th>
+						<th>Edit</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="user in users">
+						<th>{{$index+1}}.</th>
+						<td>{{user.username}}</td>
+						<td>{{user.email}}</td>
+						<td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#editUserModal" ng-click="selectUser(user);">Edit</button></td>
+						<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal" ng-click="selectUser(user);">Delete</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</main>
+	</div>
+
+
+<!-- New user modal -->
+<div class="modal fade" id="newUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">New User Registration</h5>
+			</div>
+			<div class="modal-body">
+				<form role="form">
+					<div class="row">
+						<div class="form-group">
+						    <label class="control-label col-sm-3">User Name:</label>
+						    <div class="col-sm-9">
+					      		<input type="text" class="form-control" ng-model="newUser.username">
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label class="control-label col-sm-3">Full Name:</label>
+						    <div class="col-sm-9">
+					      		<input type="text" class="form-control" ng-model="newUser.fullName">
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label class="control-label col-sm-3">Email:</label>
+						    <div class="col-sm-9">
+					      		<input type="text" class="form-control" ng-model="newUser.email">
+						    </div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-3">&nbsp;</div>
+							<div class="col-sm-9">
+								<button type="button" class="btn btn-sm btn-default" ng-click="saveUser();" data-dismiss="modal">Save</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Edit user modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Edit This User</h5>
+			</div>
+			<div class="modal-body">
+				<form role="form"> 
+					<div class="row">
+						<div class="form-group">
+						    <label class="control-label col-sm-3">User Name:</label>
+						    <div class="col-sm-9">
+					      		<input type="text" class="form-control" ng-model="clickedUser.username">
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label class="control-label col-sm-3">Full Name:</label>
+						    <div class="col-sm-9">
+					      		<input type="text" class="form-control" ng-model="clickedUser.fullName">
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label class="control-label col-sm-3">Email:</label>
+						    <div class="col-sm-9">
+					      		<input type="text" class="form-control" ng-model="clickedUser.email">
+						    </div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-3">&nbsp;</div>
+							<div class="col-sm-9">
+								<button type="button" class="btn btn-sm btn-default" data-dismiss="modal" ng-click="updateUser();">Save</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Delete User modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Are you sure</h5>
+			</div>
+			<div class="modal-body">
+				<h3 style="color: red;margin: 0;">You are going to delete {{clickedUser.fullName}} All Information</h3>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-right" data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-default pull-right" data-dismiss="modal" style="margin-right:5px;" ng-click="deleteUser();">Yes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
